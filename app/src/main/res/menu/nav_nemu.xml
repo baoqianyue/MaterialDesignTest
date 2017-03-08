@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--这里single指定这个group标签下的所有菜单项只能单选-->
+    <!--如果想使用分隔线将相应的item放到一起，只需将相应的item放到一个group中，-->
+    <!--并设置一个id-->
+    <group android:checkableBehavior="single"
+        android:id="@+id/group1">
+        <item
+            android:id="@+id/nav_me"
+            android:icon="@drawable/ic_profile"
+            android:title="Porfile" />
+        <item
+            android:id="@+id/nav_people"
+            android:icon="@drawable/ic_people"
+            android:title="People" />
+        </group>
+    <group android:id="@+id/group2">
+        <item
+            android:id="@+id/nav_location"
+            android:icon="@drawable/ic_location"
+            android:title="Location" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_events"
+            android:title="Events" />
+    </group>
+</menu>
