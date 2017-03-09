@@ -1,14 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--滑动菜单DrawerLayout，这个布局中允许放入两个子控件，第一个用于显示主屏幕-->
-<!--中的内容，第二个是显示滑动菜单中的内容-->
+<?xml version="1.0" encoding="utf-8"?><!--滑动菜单DrawerLayout，这个布局中允许放入两个子控件，第一个用于显示主屏幕--><!--中的内容，第二个是显示滑动菜单中的内容-->
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.design.widget.CoordinatorLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,8 +18,21 @@
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></android.support.v7.widget.Toolbar>
+        <!--app:elevation设置Button悬浮高度-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
-    </FrameLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_done"
+            app:elevation="8dp" />
+    </android.support.design.widget.CoordinatorLayout>
     <!--NavigationView是一个严格按照MaterialDesign风格设计的一个导航菜单-->
     <!--在使用NavigationView之前我们需要准备好menu和headerLayout。-->
     <!--layout_gravity这个属性是必须指定的，用来指定侧滑栏的滑出方向-->

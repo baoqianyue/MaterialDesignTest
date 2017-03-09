@@ -2,28 +2,45 @@ package com.example.materialdesigntest;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     //定义侧滑栏
     private DrawerLayout mDrawerLayout;
+
+    private Hero[] heros = {new Hero("hama", R.drawable.t2),
+            new Hero("taitan", R.drawable.t3), new Hero("gouxiong", R.drawable.t4),
+            new Hero("jumo", R.drawable.t5), new Hero("longnv", R.drawable.t6)};
+    private HeroAdapter adapter;
+    private List<Hero> heroList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initHeros();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new HeroAdapter(heroList);
+        recyclerView.setAdapter(adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_view);
@@ -33,15 +50,29 @@ public class MainActivity extends AppCompatActivity{
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_menu);
         }
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Data deleted", Snackbar.LENGTH_LONG)
+                        .setAction("Undo", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, "Data restored",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+            }
+        });
         /**
          * 为NavigationView的头部View设置点击事件
          */
-        View headView = navView.getHeaderView(0);
+        // View headView = navView.getHeaderView(0);
         //然后调用headView中findViewById()方法找到控件，设置点击事件
-        de.hdodenhof.circleimageview.CircleImageView mImage =
-                (CircleImageView) findViewById(R.id.nav_me);
-        TextView tvUsername = (TextView) findViewById(R.id.username);
-        TextView tvMail = (TextView) findViewById(R.id.mail);
+//        de.hdodenhof.circleimageview.CircleImageView mImage =
+//                (CircleImageView) findViewById(R.id.nav_me);
+//        TextView tvUsername = (TextView) findViewById(R.id.username);
+//        TextView tvMail = (TextView) findViewById(R.id.mail);
         //......
         navView.setCheckedItem(R.id.nav_me);//这里将菜单中的第一个item设为默认选中
         //为菜单中的每一项设置点击事件
@@ -55,6 +86,15 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
+    }
+
+    private void initHeros() {
+        heroList.clear();
+        for (int i = 0; i < 50; i++) {
+            Random random = new Random();
+            int index = random.nextInt(heros.length);
+            heroList.add(heros[index]);
+        }
     }
 
     @Override
