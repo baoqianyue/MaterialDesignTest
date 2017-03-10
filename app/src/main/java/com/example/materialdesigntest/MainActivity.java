@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +25,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     //定义侧滑栏
     private DrawerLayout mDrawerLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private Hero[] heros = {new Hero("hama", R.drawable.t2),
             new Hero("taitan", R.drawable.t3), new Hero("gouxiong", R.drawable.t4),
@@ -50,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_menu);
         }
+        //定义下拉刷新
+        swipeRefreshLayout = (SwipeRefreshLayout)
+                findViewById(R.id.swipe_refresh);
+        //为刷新时的进度条设置颜色
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        //为下拉刷新设置监听
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +100,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void refreshData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //重新加载数据
+                        initHeros();
+                        //通知数据发生变化
+                        adapter.notifyDataSetChanged();
+                        //表示刷新事件结束，并隐藏刷新进度条
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        }).start();
     }
 
     private void initHeros() {
