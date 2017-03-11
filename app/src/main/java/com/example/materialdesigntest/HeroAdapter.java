@@ -1,6 +1,7 @@
 package com.example.materialdesigntest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,7 +33,6 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.ViewHolder> {
          *
          * @param itemView
          */
-
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView;
@@ -68,7 +68,23 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.ViewHolder> {
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.hero_item,
                 parent, false);
-        return new ViewHolder(view);
+        /**
+         * 为RecyclerView的子项设置点击事件
+         * 使用Intent将name和ImageId传递到HeroActivity中
+         */
+        final ViewHolder holder = new ViewHolder(view);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                Hero hero = mHeroList.get(position);
+                Intent intent = new Intent(mContext, HeroActivity.class);
+                intent.putExtra(HeroActivity.HERO_NAME, hero.getName());
+                intent.putExtra(HeroActivity.HERO_IMAGE_ID, hero.getImageId());
+                mContext.startActivity(intent);
+            }
+        });
+        return holder;
     }
 
     /**
