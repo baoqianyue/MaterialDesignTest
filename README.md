@@ -4,6 +4,10 @@
 * DrawerLayout   
 * NavigationView   
  * menu
+  * app:showAsAction属性指定菜单个项显示的状态，     
+    always:总是显示在界面上，    never:不显示在界面上，只出现在右边的三个点中，ifRoom:空间允许时显示在界面上，不然显示在右边的三个点中  
+  * android:orderInCategory="99"       
+   设置优先级，值越大优先级越低    
  * headerLayout   
 
 ## 悬浮按钮和可交互提示     
